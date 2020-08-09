@@ -4,29 +4,24 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Test {
+public class Eng2KorConverter {
 
-	// ÃÊ¼º
-//	public static final String[] CHOSUNG =             { "¤¡", "¤¢", "¤¤",     "¤§", "¤¨", "¤©",       "¤±", "¤²", "¤³", "¤µ", "¤¶", "¤·", "¤¸", "¤¹", "¤º",
-//			"¤»", "¤¼", "¤½", "¤¾" };
 	public static final String[] ENG_MAPPING_CHOSUNG = { "r", "R", "s", "e", "E", "f", "a", "q", "Q", "t", "T", "d",
 			"w", "W", "c", "z", "x", "v", "g" };
 
-	// Áß¼º
-//	public static final String[] JUNGSUNG =             { "¤¿", "¤À", "¤Á",     "¤Â", "¤Ã", "¤Ä", "¤Å",    "¤Æ", "¤Ç", "¤È",     "¤É", "¤Ê", "¤Ë",     "¤Ì", "¤Í", "¤Î",     "¤Ï", "¤Ğ", "¤Ñ",   "¤Ò", "¤Ó" };
 	public static final String[] ENG_MAPPING_JUNGSUNG = { "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl",
 			"y", "n", "nj", "np", "nl", "b", "m", "ml", "l" };
 
-	// Á¾¼º
-//	public static final String[] JONGSUNG = { "¤¡", "¤¢", "¤£", "¤¤", "¤¥", "¤¦", "¤§", "¤©", "¤ª", "¤«", "¤¬", "¤­", "¤®", "¤¯", "¤°", "¤±", "¤²", "¤´", "¤µ", "¤¶", "¤·", "¤¸", "¤º", "¤»", "¤¼", "¤½", "¤¾" };
 	public static final String[] ENG_MAPPING_JONGSUNG = { "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq",
 			"ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g" };
 
-	// ¹«½ÃÇØ¾ß ÇÏ´Â ÄÉÀÌ½º
 	public static final String[] IGNORE_CHARACTERS = { "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
 			"[", "]", "\\", ";", "\"", ".", "/", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "{",
 			"}", "|", ":", "\'", "<", ">", "?", " " };
 
+	/**
+		ë¬´ì‹œí•´ì•¼ í•˜ëŠ” ë¬¸ìë“¤ì˜ ì •ë³´ë¥¼ Setìœ¼ë¡œ ë§Œë“¤ì–´ì„œ ë¦¬í„´í•´ ì¤€ë‹¤.
+	*/
 	public static Set<String> getIgnoreInfo() {
 		Set<String> result = new HashSet<>();
 
@@ -37,6 +32,10 @@ public class Test {
 		return result;
 	}
 
+
+	/**
+		ì´ˆì„± ì •ë³´ë¥¼ ë°›ëŠ”ë‹¤.
+	 */
 	public static Map<String, Integer> getChosungInfo(String str, int index) {
 		Map<String, Integer> result = new HashMap<>();
 		int code = 0;
@@ -57,6 +56,10 @@ public class Test {
 		return result;
 	}
 
+
+	/**
+		ì¤‘ì„± ì •ë³´ë¥¼ ë°›ëŠ”ë‹¤.
+	 */
 	public static Map<String, Integer> getJungsungInfo(String str, int index) {
 		Map<String, Integer> result = new HashMap<>();
 		boolean flag = true;
@@ -64,7 +67,7 @@ public class Test {
 		int idx = index;
 
 		if (index + 2 <= str.length()) {
-			// 1. 2ÀÚ¸® ¸ÕÀú Ã£±â
+			// ì¤‘ì„± ì •ë³´ê°€ 2ê¸€ì ì¼ë•Œ...
 			String findStrTwo = str.substring(index, index + 2);
 			for (int i = 0; i < ENG_MAPPING_JUNGSUNG.length; i++) {
 				if (ENG_MAPPING_JUNGSUNG[i].equals(findStrTwo)) {
@@ -78,7 +81,7 @@ public class Test {
 
 		if (index + 1 <= str.length()) {
 			if (flag) {
-				// 2. 1ÀÚ¸® Ã£±â
+				// ì¤‘ì„± ì •ë³´ê°€ í•œê¸€ì ì¼ë•Œ...
 				String findStr = str.substring(index, index + 1);
 				for (int i = 0; i < ENG_MAPPING_JUNGSUNG.length; i++) {
 					if (ENG_MAPPING_JUNGSUNG[i].equals(findStr)) {
@@ -96,6 +99,7 @@ public class Test {
 		return result;
 	}
 
+	/* ì¢…ì„±ì´ ë‘ê¸€ì ì¼ë•Œ ì°¾ëŠ”ê²ƒê³¼ í•œê¸€ì ì¼ë•Œ ì°¾ëŠ”ê²ƒì„ ì´ëŸ°ì‹ìœ¼ë¡œ í•˜ë‚˜ì˜ í•¨ìˆ˜ë¡œ ë§Œë“¤ì—ˆë‹¤. */
 	public static int findJongsung(String str, int index, int count) {
 		int code = -1;
 
@@ -112,6 +116,9 @@ public class Test {
 		return code;
 	}
 
+	/**
+		ì¢…ì„± ì •ë³´ë¥¼ ë°›ëŠ”ë‹¤.
+	 */
 	public static Map<String, Integer> getJongsungInfo(String str, int index) {
 		Map<String, Integer> result = new HashMap<>();
 		int code = 0;
@@ -151,9 +158,8 @@ public class Test {
 		return result;
 	}
 
-	/**
-	 * À¯´ÏÄÚµå ÇÑ±Û ±¸¼º : code = 0xAC00 + ( ÃÊ¼º°ª * 21 * 28 ) + ( Áß¼º°ª * 28 ) + ( Á¾¼º°ª )
-	 */
+
+	/* ì»¨ë²„í„° */
 	public static String convertEng2Kor(String str) {
 
 		StringBuilder sb = new StringBuilder();
@@ -176,7 +182,8 @@ public class Test {
 			Map<String, Integer> jongsungInfo = getJongsungInfo(str, i);
 			int jongsungCode = jongsungInfo.get("code");
 			i = jongsungInfo.get("index");
-			System.out.println((char) (0xAC00 + chosungCode + jungsungCode + jongsungCode));
+
+			/* ìœ ë‹ˆì½”ë“œ í•œê¸€ êµ¬ì„± : code = 0xAC00 + ( ì´ˆì„±ê°’ * 21 * 28 ) + ( ì¤‘ì„±ê°’ * 28 ) + ( ì¢…ì„±ê°’ ) */
 			sb.append((char) (0xAC00 + chosungCode + jungsungCode + jongsungCode));
 			i++;
 		}
@@ -185,10 +192,10 @@ public class Test {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(
-				convertEng2Kor("ahenrk rldjqrhk Wkrh thqlwkfmf thrdlfEo ghffh rldjqdmf rhdrurgks dbdlfgks dbxnqj!!!!"));
-//		System.out.println(convertEng2Kor("zjavbxj tksek"));
-//		System.out.println(convertEng2Kor("dkqjwl rkqkddp emfdjrktlsek."));
+		System.out.println(	convertEng2Kor("ahenrk rldjqrhk Wkrh thqlwkfmf thrdlfEo ghffh rldjqdmf rhdrurgks dbdlfgks dbxnqj!!!!"));
+		System.out.println(	convertEng2Kor("dkqjwl rkqkddp emfdjrktlsek."));
+		System.out.println(	convertEng2Kor("dkqjwlrk qkddp emfdjrktlsek."));
+		System.out.println(	convertEng2Kor("zhdRkrwl zhdRkrwl tkfkddml zhdRkrwl"));
 	}
 
 }
